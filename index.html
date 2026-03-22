@@ -3,91 +3,193 @@
 <head>
 <meta charset="UTF-8">
 <title>For My Bacha ❤️</title>
-
 <style>
     body {
         margin: 0;
         padding: 0;
-        background: black;
+        height: 100vh;
+        background: radial-gradient(circle at center, #0f001a 0%, #000 70%);
         overflow: hidden;
-        font-family: 'Segoe UI', sans-serif;
-        color: white;
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        color: #fff;
         text-align: center;
     }
 
-    /* Star background */
+    /* Twinkling stars */
     .star {
         position: absolute;
-        width: 2px;
-        height: 2px;
         background: white;
-        animation: twinkle 2s infinite;
+        border-radius: 50%;
+        animation: twinkle 3s infinite ease-in-out;
+        box-shadow: 0 0 6px white;
     }
-
     @keyframes twinkle {
-        0%,100% {opacity: 0.2;}
-        50% {opacity: 1;}
+        0%,100% { opacity: 0.3; transform: scale(0.7); }
+        50%     { opacity: 1;   transform: scale(1.1); }
     }
 
-    .content {
+    .card-wrapper {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        perspective: 1200px;          /* ← depth of 3D space */
+        width: 90%;
+        max-width: 720px;
+    }
+
+    .card {
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.15s ease-out;   /* smooth tilt */
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(255, 105, 180, 0.25);
+    }
+
+    /* Shine/glare overlay */
+    .shine {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        pointer-events: none;
+        background: linear-gradient(
+            135deg,
+            rgba(255,255,255,0) 0%,
+            rgba(255,255,255,0.15) 40%,
+            rgba(255,255,255,0) 60%
+        );
+        transform: translateZ(1px);
+        opacity: 0;
+        transition: opacity 0.4s;
+    }
+
+    .content {
+        padding: 60px 30px;
+        background: rgba(10, 0, 20, 0.4);
+        border-radius: 28px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 105, 180, 0.15);
     }
 
     h1 {
-        font-size: 3.5em;
+        font-size: 4.2em;
+        margin: 0.2em 0;
+        background: linear-gradient(90deg, #ff9a9e, #fad0c4, #fad0c4, #ff9a9e);
+        background-size: 300% 300%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: gradientFlow 7s ease infinite;
+        text-shadow: 0 0 25px rgba(255, 105, 180, 0.8);
+        transform: translateZ(40px);   /* pop forward in 3D */
+    }
+    @keyframes gradientFlow {
+        0%   { background-position: 0% 50%; }
+        50%  { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
     }
 
     #text {
-        font-size: 1.6em;
-        margin-top: 20px;
-        min-height: 50px;
+        font-size: 1.95em;
+        min-height: 90px;
+        margin: 35px 0;
+        letter-spacing: 1.2px;
+        text-shadow: 0 0 20px #ff69b4, 0 0 40px #ff1493;
+        animation: pulseGlow 2.8s ease-in-out infinite alternate;
+        transform: translateZ(25px);
+    }
+
+    @keyframes pulseGlow {
+        from { text-shadow: 0 0 12px #ff69b4, 0 0 25px #ff1493; transform: scale(1) translateZ(25px); }
+        to   { text-shadow: 0 0 25px #ff69b4, 0 0 55px #ff1493; transform: scale(1.025) translateZ(30px); }
     }
 
     button {
-        margin-top: 30px;
-        padding: 12px 25px;
-        font-size: 18px;
-        border-radius: 25px;
+        margin-top: 45px;
+        padding: 18px 50px;
+        font-size: 1.5em;
         border: none;
-        background: pink;
+        border-radius: 50px;
+        background: linear-gradient(45deg, #ff6ec7, #7873f5);
+        color: white;
         cursor: pointer;
+        box-shadow: 0 10px 30px rgba(255, 105, 180, 0.5);
+        transition: all 0.3s;
+        transform: translateZ(35px);
+    }
+    button:hover {
+        transform: translateY(-6px) scale(1.1) translateZ(45px);
+        box-shadow: 0 20px 50px rgba(255, 105, 180, 0.8);
     }
 
-    /* Hearts */
+    /* Floating hearts */
     .heart {
         position: absolute;
-        bottom: -50px;
-        font-size: 20px;
-        animation: floatUp 6s linear infinite;
+        bottom: -80px;
+        font-size: 24px;
+        pointer-events: none;
+        animation: floatUp linear forwards;
+        opacity: 0.9;
+        transform: translateX(var(--x)) rotate(var(--r));
     }
-
     @keyframes floatUp {
         to {
-            transform: translateY(-800px);
+            transform: translateY(-100vh) translateX(calc(var(--x) + 80px)) rotate(calc(var(--r) + 720deg));
             opacity: 0;
         }
     }
+
+    /* Sparkles */
+    .sparkle {
+        position: absolute;
+        width: 6px; height: 6px;
+        background: white;
+        border-radius: 50%;
+        pointer-events: none;
+        animation: sparkleAnim 2s infinite;
+        box-shadow: 0 0 12px white;
+    }
+    @keyframes sparkleAnim {
+        0%,100% { transform: scale(0); opacity: 0; }
+        50%     { transform: scale(1.4); opacity: 0.95; }
+    }
+
+    /* Final screen */
+    .final {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        animation: finalPop 1.3s ease-out;
+    }
+    @keyframes finalPop {
+        0%   { opacity: 0; transform: scale(0.5); }
+        70%  { opacity: 1; transform: scale(1.18); }
+        100% { transform: scale(1); }
+    }
+    .final h1 { font-size: 6em; animation: pulseGlow 2.2s infinite alternate; }
 </style>
 </head>
-
 <body>
 
-<div class="content">
-    <h1>Hey Bacha ❤️</h1>
-    <div id="text"></div>
-    <button onclick="finalMessage()">Click Me 💌</button>
+<div class="card-wrapper">
+    <div class="card" id="tiltCard">
+        <div class="shine" id="shine"></div>
+        <div class="content">
+            <h1>Hey Bacha ❤️</h1>
+            <div id="text"></div>
+            <button onclick="finalMessage()">Click Me 💌</button>
+        </div>
+    </div>
 </div>
 
 <!-- Music -->
-<audio autoplay loop>
+<audio autoplay loop volume="0.25">
     <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mp3">
 </audio>
 
 <script>
-/* Typing effect */
+// Typing effect
 const messages = [
     "You are sooo special to me 💖",
     "Every moment with you feels magical ✨",
@@ -95,65 +197,112 @@ const messages = [
     "And I just want to say...",
     "I LOVE YOU ❤️"
 ];
-
 let i = 0, j = 0;
-let current = "";
 let isDeleting = false;
 
 function type() {
-    current = messages[i];
-    
-    document.getElementById("text").innerHTML =
-        current.substring(0, j);
+    const elem = document.getElementById("text");
+    let current = messages[i];
+    elem.innerHTML = current.substring(0, j);
 
     if (!isDeleting && j < current.length) {
         j++;
-        setTimeout(type, 80);
+        setTimeout(type, 65 + Math.random()*50);
     } else if (isDeleting && j > 0) {
         j--;
-        setTimeout(type, 40);
+        setTimeout(type, 30);
     } else {
         isDeleting = !isDeleting;
-        if (!isDeleting) i = (i + 1) % messages.length;
-        setTimeout(type, 800);
+        if (!isDeleting) {
+            i = (i + 1) % messages.length;
+            setTimeout(type, 1400);
+        } else {
+            setTimeout(type, 350);
+        }
     }
 }
-
 type();
 
-/* Stars */
-for (let i = 0; i < 100; i++) {
+// Stars
+for (let k = 0; k < 160; k++) {
     let star = document.createElement("div");
-    star.classList.add("star");
-    star.style.left = Math.random() * window.innerWidth + "px";
-    star.style.top = Math.random() * window.innerHeight + "px";
+    star.className = "star";
+    star.style.width = star.style.height = (Math.random()*3 + 1) + "px";
+    star.style.left = Math.random() * 100 + "vw";
+    star.style.top = Math.random() * 100 + "vh";
+    star.style.animationDelay = Math.random() * 4 + "s";
     document.body.appendChild(star);
 }
 
-/* Floating hearts */
+// Hearts
 function createHeart() {
     const heart = document.createElement("div");
-    heart.classList.add("heart");
-    heart.innerHTML = "❤️";
-    heart.style.left = Math.random() * window.innerWidth + "px";
-    heart.style.fontSize = Math.random() * 20 + 15 + "px";
+    heart.className = "heart";
+    heart.innerHTML = Math.random() > 0.35 ? "❤️" : "💞";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (Math.random() * 32 + 20) + "px";
+    heart.style.setProperty("--x", (Math.random() - 0.5) * 140 + "px");
+    heart.style.setProperty("--r", (Math.random() - 0.5) * 80 + "deg");
+    heart.style.animationDuration = (Math.random() * 6 + 8) + "s";
     document.body.appendChild(heart);
-
-    setTimeout(() => heart.remove(), 6000);
+    setTimeout(() => heart.remove(), 14000);
 }
+setInterval(createHeart, 260);
 
-setInterval(createHeart, 300);
+// Sparkles
+function createSparkle() {
+    const sparkle = document.createElement("div");
+    sparkle.className = "sparkle";
+    sparkle.style.left = (Math.random() * 70 + 15) + "%";
+    sparkle.style.top  = (Math.random() * 70 + 10) + "%";
+    sparkle.style.animationDelay = Math.random() * 2.5 + "s";
+    document.querySelector(".content").appendChild(sparkle);
+    setTimeout(() => sparkle.remove(), 3500);
+}
+setInterval(createSparkle, 700);
 
-/* Final message */
+// ─── 3D Tilt Effect ───────────────────────────────
+const card = document.getElementById("tiltCard");
+const shine = document.getElementById("shine");
+
+card.addEventListener("mousemove", (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // Normalize to -1 to 1 range
+    const xAxis = (x / rect.width) * 2 - 1;   // -1 (left) → 1 (right)
+    const yAxis = (y / rect.height) * 2 - 1;  // -1 (top) → 1 (bottom)
+
+    // Tilt strength (adjust degrees)
+    const tiltX = yAxis * -18;   // negative = natural tilt direction
+    const tiltY = xAxis * 18;
+
+    card.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.03)`;
+
+    // Shine position
+    shine.style.opacity = 0.7;
+    shine.style.backgroundPosition = `${x}px ${y}px`;
+});
+
+card.addEventListener("mouseleave", () => {
+    card.style.transform = "rotateX(0deg) rotateY(0deg) scale(1)";
+    shine.style.opacity = 0;
+});
+
+// Final message
 function finalMessage() {
     document.body.innerHTML = `
-        <div style="margin-top:20%;">
+        <div class="final">
             <h1>I LOVE YOU BACHA ❤️</h1>
-            <p style="font-size:1.5em;">Forever & Always 💖</p>
+            <p style="font-size:2.4em; margin-top:30px; opacity:0.92;">
+                Forever & Always 💞✨
+            </p>
         </div>
     `;
+    setInterval(createHeart, 300);
+    setInterval(createSparkle, 600);
 }
 </script>
-
 </body>
 </html>
