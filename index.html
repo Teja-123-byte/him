@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For My Bacha ❤️</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: black;
+        overflow: hidden;
+        font-family: 'Segoe UI', sans-serif;
+        color: white;
+        text-align: center;
+    }
+
+    /* Star background */
+    .star {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: white;
+        animation: twinkle 2s infinite;
+    }
+
+    @keyframes twinkle {
+        0%,100% {opacity: 0.2;}
+        50% {opacity: 1;}
+    }
+
+    .content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    h1 {
+        font-size: 3.5em;
+    }
+
+    #text {
+        font-size: 1.6em;
+        margin-top: 20px;
+        min-height: 50px;
+    }
+
+    button {
+        margin-top: 30px;
+        padding: 12px 25px;
+        font-size: 18px;
+        border-radius: 25px;
+        border: none;
+        background: pink;
+        cursor: pointer;
+    }
+
+    /* Hearts */
+    .heart {
+        position: absolute;
+        bottom: -50px;
+        font-size: 20px;
+        animation: floatUp 6s linear infinite;
+    }
+
+    @keyframes floatUp {
+        to {
+            transform: translateY(-800px);
+            opacity: 0;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="content">
+    <h1>Hey Bacha ❤️</h1>
+    <div id="text"></div>
+    <button onclick="finalMessage()">Click Me 💌</button>
+</div>
+
+<!-- Music -->
+<audio autoplay loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mp3">
+</audio>
+
+<script>
+/* Typing effect */
+const messages = [
+    "You are sooo special to me 💖",
+    "Every moment with you feels magical ✨",
+    "You make my world brighter 🌍",
+    "And I just want to say...",
+    "I LOVE YOU ❤️"
+];
+
+let i = 0, j = 0;
+let current = "";
+let isDeleting = false;
+
+function type() {
+    current = messages[i];
+    
+    document.getElementById("text").innerHTML =
+        current.substring(0, j);
+
+    if (!isDeleting && j < current.length) {
+        j++;
+        setTimeout(type, 80);
+    } else if (isDeleting && j > 0) {
+        j--;
+        setTimeout(type, 40);
+    } else {
+        isDeleting = !isDeleting;
+        if (!isDeleting) i = (i + 1) % messages.length;
+        setTimeout(type, 800);
+    }
+}
+
+type();
+
+/* Stars */
+for (let i = 0; i < 100; i++) {
+    let star = document.createElement("div");
+    star.classList.add("star");
+    star.style.left = Math.random() * window.innerWidth + "px";
+    star.style.top = Math.random() * window.innerHeight + "px";
+    document.body.appendChild(star);
+}
+
+/* Floating hearts */
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * window.innerWidth + "px";
+    heart.style.fontSize = Math.random() * 20 + 15 + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 6000);
+}
+
+setInterval(createHeart, 300);
+
+/* Final message */
+function finalMessage() {
+    document.body.innerHTML = `
+        <div style="margin-top:20%;">
+            <h1>I LOVE YOU BACHA ❤️</h1>
+            <p style="font-size:1.5em;">Forever & Always 💖</p>
+        </div>
+    `;
+}
+</script>
+
+</body>
+</html>
